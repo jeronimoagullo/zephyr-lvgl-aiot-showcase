@@ -1,0 +1,7 @@
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
+
+#define THREAD_UPDATE_NUMBER_STACK_SIZE 1000
+#define THREAD_UPDATE_NUMBER_PRIORITY 2
+
+#endif
