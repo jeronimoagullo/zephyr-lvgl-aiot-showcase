@@ -47,10 +47,10 @@ void main(void)
 	 */
 
 	// Add Zephyr logo
-        LV_IMG_DECLARE(Zephyr_RTOS_logo_100pp_a8);
-        lv_obj_t * img1 = lv_img_create(lv_scr_act());
-        lv_img_set_src(img1, &Zephyr_RTOS_logo_100pp_a8);
-        lv_obj_align(img1, LV_ALIGN_TOP_MID, 0, 50);
+	LV_IMG_DECLARE(Zephyr_RTOS_logo_100pp_a8);
+	lv_obj_t * img1 = lv_img_create(lv_scr_act());
+	lv_img_set_src(img1, &Zephyr_RTOS_logo_100pp_a8);
+	lv_obj_align(img1, LV_ALIGN_TOP_MID, 0, 50);
 
 	// Add label for displaying booting log
 	lv_obj_t * log_label = lv_label_create(lv_scr_act());
