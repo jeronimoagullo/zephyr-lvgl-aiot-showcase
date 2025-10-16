@@ -10,6 +10,7 @@
  * @addtogroup jeroagulloNetLib
  * @{
  */
+#include <errno.h>
 #include <zephyr/net/net_if.h>
 #include <zephyr/net/net_core.h>
 #include <zephyr/net/net_context.h>
@@ -113,11 +114,11 @@ void init_network(struct net_if *iface){
 	LOG_INF("Connection requested...");
 	// Wait for connection during 20 seconds....
 	int ret = k_sem_take(&net_cb_sem, K_SECONDS(30));
-	if (ret < 0) {
-		return false;
-	} else {
-		return true;
-	}
+
+	if(ret == EAGAIN)
+		LOG_ERR("Connection failed due to timeout");
+
+	return ret;
 }
 
 /**

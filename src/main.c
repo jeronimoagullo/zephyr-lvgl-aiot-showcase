@@ -63,7 +63,7 @@ void main(void)
 	ret = init_network(iface);
 	char log_results[300] = "";
 
-	if (ret) {
+	if (ret == 0) {
 		strcat(log_results, "#008000 [-] Network successed#\n");
 	} else {
 		strcat(log_results, "#ff0000 [x] Network failed#\n");
