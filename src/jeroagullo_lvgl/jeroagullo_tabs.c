@@ -12,12 +12,6 @@ LOG_MODULE_REGISTER(jeroagullo_tabs);
 #define TAB_GRAPH       3
 #define TAB_TFLITE      4
 
-// The counters must be defined as global variables, otherwise the variable scope
-// will be just the function in which we call `lv_obj_set_userdata`, resulting
-// in a null pointer when calling `lv_obj_get_userdata` from other function
-int btn_count1 = 0;
-int btn_count2 = 0;
-int btn_count3 = 0;
 
 // NOTE: there is a bug in which the tabview changes when you press the button, so the returning value 
 // of lv_tabview_get_tab_act is a weird number, working only by "sliding" instead of "clicking"
@@ -56,47 +50,6 @@ static void event_tabview_cb(lv_event_t *e){
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
         }*/
-}
-
-
-static void event_btn_cb(lv_event_t * e)
-{
-        lv_obj_t * btn = lv_event_get_target(e);
-        lv_event_code_t code = lv_event_get_code(e);
-        lv_obj_t * label = lv_event_get_user_data(e);
-
-        //static uint32_t cnt1[3] = {1};
-
-        switch(code) {
-        case LV_EVENT_PRESSED:
-                k_mutex_lock(&lvgl_mutex, K_FOREVER);
-                lv_label_set_text(label, "The last button event:\nLV_EVENT_PRESSED");
-                k_mutex_unlock(&lvgl_mutex);
-                break;
-        case LV_EVENT_CLICKED:
-                k_mutex_lock(&lvgl_mutex, K_FOREVER);
-                lv_label_set_text(label, "The last button event:\nLV_EVENT_CLICKED");
-                lv_obj_t *btn_label = lv_obj_get_child(btn, 0);
-
-                int *count = (int*)lv_obj_get_user_data(btn);
-                *count += 1;
-                lv_label_set_text_fmt(btn_label, "%"LV_PRIu32, *count);
-
-                k_mutex_unlock(&lvgl_mutex);
-                break;
-        case LV_EVENT_LONG_PRESSED:
-                k_mutex_lock(&lvgl_mutex, K_FOREVER);
-                lv_label_set_text(label, "The last button event:\nLV_EVENT_LONG_PRESSED");
-                k_mutex_unlock(&lvgl_mutex);
-                break;
-        case LV_EVENT_LONG_PRESSED_REPEAT:
-                k_mutex_lock(&lvgl_mutex, K_FOREVER);
-                lv_label_set_text(label, "The last button event:\nLV_EVENT_LONG_PRESSED_REPEAT");
-                k_mutex_unlock(&lvgl_mutex);
-                break;
-        default:
-                break;
-        }
 }
 
 void create_tab1(lv_obj_t* tab){
@@ -153,49 +106,16 @@ void create_tab2(lv_obj_t* tab){
         lv_label_set_text(label_bottom, "Touch a button");
         lv_obj_align(label_bottom, LV_ALIGN_BOTTOM_LEFT, 20, 0);
 
-        // create button 1
-        lv_obj_t * btn = lv_btn_create(tab);
-        lv_obj_t * btn_label = lv_label_create(btn);
 
-        lv_label_set_text(btn_label, "button 1");
-        lv_obj_center(btn_label);
+        // create sliders
+        lv_example_slider_1(tab);
+        lv_example_slider_3(tab);
+        lv_example_arc_1(tab);
 
-        lv_obj_add_style(btn, &style_btn, 0);
-        lv_obj_align(btn, LV_ALIGN_LEFT_MID, 0, 0);
-
-        lv_obj_set_user_data(btn, &btn_count1);
-        lv_obj_add_event_cb(btn, event_btn_cb, LV_EVENT_ALL, label_bottom);
-
-
-        // create button 2
-        lv_obj_t * btn2 = lv_btn_create(tab);
-        lv_obj_t * btn_label2 = lv_label_create(btn2);
-
-        lv_label_set_text(btn_label2, "button 2");
-        lv_obj_center(btn_label2);
-
-        lv_obj_add_style(btn2, &style_btn2, 0);
-        lv_obj_align(btn2, LV_ALIGN_CENTER, 0, 0);
-
-        lv_obj_set_user_data(btn2, &btn_count2);
-        lv_obj_add_event_cb(btn2, event_btn_cb, LV_EVENT_ALL, label_bottom);
-
-        // create button 3
-        lv_obj_t * btn3 = lv_btn_create(tab);
-        lv_obj_t * btn_label3 = lv_label_create(btn3);
-
-        lv_label_set_text(btn_label3, "button 3");
-        lv_obj_center(btn_label3);
-
-        lv_obj_set_user_data(btn3, &btn_count3);
-        lv_obj_add_style(btn3, &style_btn3, 0);
-        lv_obj_align(btn3, LV_ALIGN_RIGHT_MID, 0, 0);
-        lv_obj_add_event_cb(btn3, event_btn_cb, LV_EVENT_ALL, label_bottom);
-
-        //lv_example_slider_1(tab);
-        //lv_example_slider_3(tab);
-        //lv_example_arc_1(tab);
-
+        // create buttons
+        create_btn_1(tab, label_bottom);
+        create_btn_2(tab, label_bottom);
+        
 }
 
 void create_tab3(lv_obj_t* tab){
@@ -241,7 +161,7 @@ void lv_example_tabview_1(void)
 
         lv_obj_add_style(tabview,  &style_tabview, 0);
 
-        /*Add 3 tabs (the tabs are page (lv_page) and can be scrolled*/
+        /*Add tabs (the tabs are page (lv_page) and can be scrolled*/
         lv_obj_t * tab1 = lv_tabview_add_tab(tabview, "welcome");
         lv_obj_t * tab2 = lv_tabview_add_tab(tabview, "sliders");
         lv_obj_t * tab3 = lv_tabview_add_tab(tabview, "graph");

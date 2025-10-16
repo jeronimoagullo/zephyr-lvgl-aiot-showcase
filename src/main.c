@@ -73,7 +73,7 @@ void main(void)
 
 	lv_label_set_text(log_label, log_results);
 	lv_task_handler();
-	k_msleep(10 * MSEC_PER_SEC);
+	k_msleep(1 * MSEC_PER_SEC);
 
 	// Initialize TensorFlow
 	LOG_INF("Starting TensorFlow Model");
@@ -91,7 +91,7 @@ void main(void)
 					"Launching app...");
 	lv_task_handler();
 
-	k_msleep(2 * MSEC_PER_SEC);
+	k_msleep(1 * MSEC_PER_SEC);
 
 	// Delete booting objects
 	lv_obj_del(img1);

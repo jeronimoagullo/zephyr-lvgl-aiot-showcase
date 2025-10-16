@@ -73,7 +73,7 @@ display-poc-1_jero/
 - [x] disable/enable the threads when a tab is pressed
 - [x] Add mutex to all lvgl functions to synchronize with lv_task_handler() call
 - [x] Add Network connection (tested with ethernet)
-- [ ] Add sliders to corresponding windows
+- [x] Add sliders to corresponding windows
 - [ ] Add mqtt to send the sliders values
 - [ ] Add IMU sensor
 - [ ] Add TensorFlow Lite model
