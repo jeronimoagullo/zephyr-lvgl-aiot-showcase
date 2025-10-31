@@ -22,6 +22,7 @@
 
 #include "config.h"
 #include "jeroagullo_lvgl/jeroagullo_styles.h"
+#include "mqtt/jeroagullo_mqtt.h"
 
 #define LOG_LEVEL CONFIG_LOG_DEFAULT_LEVEL
 #include <zephyr/logging/log.h>
@@ -85,6 +86,26 @@ void main(void)
 	k_msleep(1 * MSEC_PER_SEC);
 
 	// Initialize MQTT
+
+	LOG_INF("Starting mqtt connection");
+	ret = mqtt_try_to_connect();
+
+	if (ret != 0){
+		char mqtt_error[100];
+		sprintf(mqtt_error, "Please, check broker %s:%d\nRebooting system", SERVER_ADDR, SERVER_PORT);
+		lv_label_set_text(log_label, 	"[*]Network successed\n"
+						"[*]TensorFlow Lite model successed\n"
+						"[x]MQTT connection Error");
+		lv_obj_t *mqtt_error_label = lv_label_create(lv_scr_act());
+		lv_obj_add_style(mqtt_error_label, &style_error, 0);
+		lv_label_set_text(mqtt_error_label, mqtt_error);
+		lv_obj_align_to(mqtt_error_label, log_label, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 20);
+		lv_task_handler();
+		k_msleep(5 * MSEC_PER_SEC);
+		sys_reboot(SYS_REBOOT_WARM);
+	}
+
+
 	lv_label_set_text(log_label, 	"[*]Network successed\n"
 					"[*]TensorFlow Lite model successed\n"
 					"[*]MQTT connection successed\n"

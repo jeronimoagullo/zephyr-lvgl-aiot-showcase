@@ -2,15 +2,16 @@
 #include <zephyr/kernel.h>
 
 #include "jeroagullo_styles.h"
+#include "mqtt/jeroagullo_mqtt.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(jeroagullo_tabs);
 
 #define TAB_WELCOME     0
-#define TAB_BUTTONS     1
-#define TAB_SLIDERS     2
-#define TAB_GRAPH       3
-#define TAB_TFLITE      4
+#define TAB_SLIDERS     1
+#define TAB_GRAPH       2
+#define TAB_TFLITE      3
+#define TAB_CONFIG      4
 
 
 // NOTE: there is a bug in which the tabview changes when you press the button, so the returning value 
@@ -23,33 +24,33 @@ static void event_tabview_cb(lv_event_t *e){
 
         LOG_INF("Current Active Tab : %d", tabIdx);
 
-        /*switch(tabIdx){
+        switch(tabIdx){
                 case TAB_WELCOME:
-                        k_thread_suspend(thread_inferenceTFLite_id);
-                        k_thread_suspend(thread_chart_id);
+                        //k_thread_suspend(thread_inferenceTFLite_id);
+                        //k_thread_suspend(thread_chart_id);
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
-                case TAB_BUTTONS:
-                        k_thread_suspend(thread_inferenceTFLite_id);
-                        k_thread_suspend(thread_chart_id);
-                        k_thread_resume(thread_mqtt_publish_id);
-                break;
                 case TAB_SLIDERS:
-                        k_thread_suspend(thread_inferenceTFLite_id);
-                        k_thread_suspend(thread_chart_id);
+                        //k_thread_suspend(thread_inferenceTFLite_id);
+                        //k_thread_suspend(thread_chart_id);
                         k_thread_resume(thread_mqtt_publish_id);
                 break;
                 case TAB_GRAPH:
-                        k_thread_suspend(thread_inferenceTFLite_id);
-                        k_thread_resume(thread_chart_id);
+                        //k_thread_suspend(thread_inferenceTFLite_id);
+                        //k_thread_resume(thread_chart_id);
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
                 case TAB_TFLITE:
-                        k_thread_resume(thread_inferenceTFLite_id);
-                        k_thread_suspend(thread_chart_id);
+                        //k_thread_resume(thread_inferenceTFLite_id);
+                        //k_thread_suspend(thread_chart_id);
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
-        }*/
+                case TAB_CONFIG:
+                        //k_thread_resume(thread_inferenceTFLite_id);
+                        //k_thread_suspend(thread_chart_id);
+                        k_thread_suspend(thread_mqtt_publish_id);
+                break;
+        }
 }
 
 void create_tab1(lv_obj_t* tab){
@@ -146,10 +147,6 @@ void create_tab5(lv_obj_t* tab){
         lv_obj_t * label = lv_label_create(tab);
         lv_label_set_text(label, "You can check and modify the configuration of device");
         lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
-
-        //lv_example_slider_1(tab);
-        //lv_example_slider_3(tab);
-        //lv_example_arc_1(tab);
 }
 
 

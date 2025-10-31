@@ -1,9 +1,9 @@
 #include <lvgl.h>
 #include "jeroagullo_styles.h"
-//#include "mqtt/sngular_mqtt.h"
+#include "mqtt/jeroagullo_mqtt.h"
 
 #include <zephyr/logging/log.h>
-LOG_MODULE_REGISTER(sngular_sliders);
+LOG_MODULE_REGISTER(jeroagullo_sliders);
 
 static void slider_simple_event_cb(lv_event_t * e);
 static void slider_double_event_cb(lv_event_t * e);
@@ -52,10 +52,10 @@ static void slider_simple_event_cb(lv_event_t * e)
         lv_label_set_text(label, buf);
 	k_mutex_unlock(&lvgl_mutex);
 
-        /*k_mutex_unlock(&mqtt_publish_mutex);
+        k_mutex_unlock(&mqtt_publish_mutex);
         sprintf(mqtt_publish_message, "plain slider: %d%%", (int)lv_slider_get_value(slider));
         k_condvar_signal(&mqtt_publish_condvar);
-        k_mutex_unlock(&mqtt_publish_mutex);*/
+        k_mutex_unlock(&mqtt_publish_mutex);
 }
 
 
@@ -89,10 +89,10 @@ static void slider_double_event_cb(lv_event_t * e)
 
         if(code == LV_EVENT_VALUE_CHANGED){
                 // mqtt publish data
-                /*k_mutex_unlock(&mqtt_publish_mutex);
+                k_mutex_unlock(&mqtt_publish_mutex);
                 sprintf(mqtt_publish_message, "double slider: %d - %d", (int)lv_slider_get_left_value(obj), (int)lv_slider_get_value(obj));
                 k_condvar_signal(&mqtt_publish_condvar);
-                k_mutex_unlock(&mqtt_publish_mutex);*/
+                k_mutex_unlock(&mqtt_publish_mutex);
         }
 
         /*Provide some extra space for the value*/
@@ -155,10 +155,10 @@ static void slider_arc_event_cb(lv_event_t * e)
         k_mutex_unlock(&lvgl_mutex);
 
         // mqtt publish data
-        /*k_mutex_unlock(&mqtt_publish_mutex);
+        k_mutex_unlock(&mqtt_publish_mutex);
         sprintf(mqtt_publish_message, "arc slider: %d%%", lv_arc_get_value(arc));
         k_condvar_signal(&mqtt_publish_condvar);
-        k_mutex_unlock(&mqtt_publish_mutex);*/
+        k_mutex_unlock(&mqtt_publish_mutex);
 }
 
 
