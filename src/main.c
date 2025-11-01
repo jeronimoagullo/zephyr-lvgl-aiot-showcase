@@ -21,8 +21,9 @@
 #include <zephyr/sys/reboot.h>
 
 #include "config.h"
-#include "jeroagullo_lvgl/jeroagullo_styles.h"
+#include "jeroagullo_lvgl/jeroagullo_lvgl.h"
 #include "mqtt/jeroagullo_mqtt.h"
+#include "config_network.h"
 
 #define LOG_LEVEL CONFIG_LOG_DEFAULT_LEVEL
 #include <zephyr/logging/log.h>
@@ -32,7 +33,7 @@ void main(void)
 {
 	int ret = 0;
 	const struct device *display_dev;
-	struct net_if *iface;
+	struct net_if *iface = NULL;
 
 	display_dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
 	if (!device_is_ready(display_dev)) {

@@ -1,6 +1,6 @@
 #include <zephyr/kernel.h>
 #include <lvgl.h>
-#include "jeroagullo_styles.h"
+#include "jeroagullo_lvgl.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(jeroagullo_charts);
@@ -13,7 +13,10 @@ struct k_thread thread_chart_data;
 
 k_tid_t thread_chart_id;
 
-void lv_update_imu_chart(lv_obj_t *chart){
+void lv_update_imu_chart(void *chart_ptr, void *unused2, void *unused3)
+{        
+        lv_obj_t *chart = (lv_obj_t *)chart_ptr;
+
         uint8_t i = 0;
         while(1) {
                 lv_chart_series_t * ser = lv_chart_get_series_next(chart, NULL);

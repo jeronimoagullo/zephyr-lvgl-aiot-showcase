@@ -1,5 +1,5 @@
 #include <lvgl.h>
-#include "jeroagullo_styles.h"
+#include "jeroagullo_lvgl.h"
 #include "mqtt/jeroagullo_mqtt.h"
 
 #include <zephyr/logging/log.h>

@@ -1,6 +1,6 @@
 #include <zephyr/kernel.h>
 #include <lvgl.h>
-#include "jeroagullo_styles.h"
+#include "jeroagullo_lvgl.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(jeroagullo_styles);
