@@ -1,0 +1,4 @@
+# Kconfig.zephyr - Include Zephyr Kconfig
+
+# Import Zephyr Kconfig
+osource "$(ZEPHYR_BASE)/Kconfig.zephyr"

@@ -23,7 +23,7 @@ extern char WIFI_PASSWORD[100];
 #ifndef __CONFIG_NET_H__
 #define __CONFIG_NET_H__
 
-void init_network(struct net_if *iface);
+int init_network(struct net_if *iface);
 
 /**
  * @}

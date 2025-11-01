@@ -1,0 +1,55 @@
+# Kconfig - Zephyr LVGL AIOT Showcase
+
+mainmenu "Zephyr LVGL AIOT Showcase"
+
+module = APP
+module-str = Application module
+source "Kconfig.zephyr"
+
+# Custom MQTT Configuration
+menu "MQTT Configuration"
+
+config MQTT_CLIENTID
+	string "MQTT Client ID"
+	default "my-client"
+	help
+	  MQTT client identifier used when connecting to the broker.
+
+config MQTT_TOPIC
+	string "MQTT Topic"
+	default "telemetry"
+	help
+	  Default MQTT topic for publishing telemetry data.
+
+config MQTT_SERVER_PORT
+	int "MQTT Server Port"
+	default 1883
+	range 1 65535
+	help
+	  MQTT broker port number.
+
+config MQTT_SERVER_ADDR
+	string "MQTT Server Address"
+	default "10.42.0.1"
+	help
+	  IP address or hostname of the MQTT broker.
+
+config MQTT_USE_AUTH
+	bool "Enable MQTT Authentication"
+	default y
+	help
+	  Enable username/password authentication
+
+if MQTT_USE_AUTH
+
+config MQTT_USER_NAME
+	string "MQTT Username"
+	default "my-auth-id-1@my-tenant"
+
+config MQTT_PASSWORD
+	string "MQTT Password"
+	default "my-password"
+
+endif
+
+endmenu

@@ -27,23 +27,15 @@ extern k_tid_t thread_mqtt_publish_id;
 extern char mqtt_publish_message[MQTT_PUBLISH_MESSAGE_LENGTH];
 
 
-/* Address of the server*/
-#define SERVER_ADDR			"10.42.0.1"	
 /* The SERVER_HOSTNAME must match the Common Name (CN) of the server ca.crt */
-#define SERVER_HOSTNAME         	SERVER_ADDR
+#define SERVER_HOSTNAME         	CONFIG_MQTT_SERVER_ADDR
 /* Port of the server. 1883 for no TLS*/
-#define SERVER_PORT                     1883
+#define CONFIG_MQTT_SERVER_PORT                     1883
 
 /* configuration setting of mqtt protocol */
 #define APP_CONNECT_TIMEOUT_MS		2000
 #define APP_PING_MSECS			CONFIG_MQTT_KEEPALIVE * MSEC_PER_SEC
 #define APP_CONNECT_TRIES		3
-
-#define MQTT_CLIENTID			"my-client"
-#define TOPIC                           "telemetry"
-//#define MQTT_PASSWORD                  "my-password"
-//#define MQTT_USER_NAME                 "my-auth-id-1@my-tenant"
-
 
 /* The mqtt client struct */
 extern bool connected;

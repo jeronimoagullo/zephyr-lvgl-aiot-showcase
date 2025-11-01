@@ -146,7 +146,7 @@ int publish(enum mqtt_qos qos)
 	struct mqtt_publish_param param;
 
 	param.message.topic.qos = qos;
-	param.message.topic.topic.utf8 = TOPIC;
+	param.message.topic.topic.utf8 = CONFIG_MQTT_TOPIC;
 	param.message.topic.topic.size =
 			strlen(param.message.topic.topic.utf8);
 	param.message.payload.data = mqtt_publish_message;
@@ -169,11 +169,11 @@ void broker_init(void)
 	struct sockaddr_in *broker4 = (struct sockaddr_in *)&broker;
 
 	broker4->sin_family = AF_INET;
-	broker4->sin_port = htons(SERVER_PORT);
+	broker4->sin_port = htons(CONFIG_MQTT_SERVER_PORT);
 #if defined(CONFIG_DNS_RESOLVER)
-	inet_pton(AF_INET, SERVER_ADDR, &broker4->sin_addr);
+	inet_pton(AF_INET, CONFIG_MQTT_SERVER_ADDR, &broker4->sin_addr);
 #else
-    zsock_inet_pton(AF_INET, SERVER_ADDR, &broker4->sin_addr);
+    zsock_inet_pton(AF_INET, CONFIG_MQTT_SERVER_ADDR, &broker4->sin_addr);
 #endif
 }
 
@@ -183,30 +183,26 @@ void client_init()
 
 	broker_init();
 
-		/* Username and password for mqtt authentication. Defined in config.h */
-#ifdef MQTT_USER_NAME
-	struct mqtt_utf8 userName = MQTT_UTF8_LITERAL(MQTT_USER_NAME);
-#endif
-#ifdef MQTT_PASSWORD
-	struct mqtt_utf8 userPassword = MQTT_UTF8_LITERAL(MQTT_PASSWORD);
+	/* Username and password for mqtt authentication */
+#if defined(CONFIG_MQTT_USE_AUTH)
+	struct mqtt_utf8 userName = MQTT_UTF8_LITERAL(CONFIG_MQTT_USER_NAME);
+	struct mqtt_utf8 userPassword = MQTT_UTF8_LITERAL(CONFIG_MQTT_PASSWORD);
 #endif
 
 	/* MQTT client configuration */
 	client.broker = &broker;
 	client.evt_cb = mqtt_evt_handler;
-	client.client_id.utf8 = (uint8_t *)MQTT_CLIENTID;
-	client.client_id.size = strlen(MQTT_CLIENTID);
-#ifdef MQTT_USER_NAME
-	client.user_name = &userName;
-#else	
-	client.user_name = NULL;
-#endif
+	client.client_id.utf8 = (uint8_t *)CONFIG_MQTT_CLIENTID;
+	client.client_id.size = strlen(CONFIG_MQTT_CLIENTID);
 
-#ifdef MQTT_PASSWORD
+#if defined(CONFIG_MQTT_USE_AUTH)
+	client.user_name = &userName;
 	client.password = &userPassword;
 #else
+	client.user_name = NULL;
 	client.password = NULL;
 #endif
+
 	client.protocol_version = MQTT_VERSION_3_1_1;
 
 	/* MQTT buffers configuration */
@@ -358,11 +354,11 @@ int get_mqtt_broker_addrinfo(void)
 		rc = zsock_getaddrinfo(SERVER_HOSTNAME, "8883",
 				       &hints, &haddr);
 		if (rc == 0) {
-			LOG_INF("DNS resolved for %s:%d", SERVER_HOSTNAME, SERVER_PORT);
+			LOG_INF("DNS resolved for %s:%d", SERVER_HOSTNAME, CONFIG_MQTT_SERVER_PORT);
 			return 0;
 		}
 
-		LOG_ERR("DNS not resolved for %s:%d, retrying", SERVER_HOSTNAME, SERVER_PORT);
+		LOG_ERR("DNS not resolved for %s:%d, retrying", SERVER_HOSTNAME, CONFIG_MQTT_SERVER_PORT);
 	}
 
 	return rc;

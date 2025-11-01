@@ -69,7 +69,7 @@ static void handler(struct net_mgmt_event_callback *cb,
 }
 
 
-void init_network(struct net_if *iface){
+int init_network(struct net_if *iface){
 	k_sem_init(&net_cb_sem, 0, 1);
 
 	LOG_INF("STARTING NET...");

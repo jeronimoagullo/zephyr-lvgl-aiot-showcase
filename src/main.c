@@ -92,7 +92,7 @@ void main(void)
 
 	if (ret != 0){
 		char mqtt_error[100];
-		sprintf(mqtt_error, "Please, check broker %s:%d\nRebooting system", SERVER_ADDR, SERVER_PORT);
+		sprintf(mqtt_error, "Please, check broker %s:%d\nRebooting system", CONFIG_MQTT_SERVER_ADDR, CONFIG_MQTT_SERVER_PORT);
 		lv_label_set_text(log_label, 	"[*]Network successed\n"
 						"[*]TensorFlow Lite model successed\n"
 						"[x]MQTT connection Error");

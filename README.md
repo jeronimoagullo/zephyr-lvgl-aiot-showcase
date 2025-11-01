@@ -61,20 +61,88 @@ display-poc-1_jero/
     ├── config.h            # Project-wide configuration (MQTT, etc.)
     ├── config_network.c    # Network initialization logic
     ├── config_network.h
-    └── jeroagullo_lvgl/    # LVGL UI source files
-        ├── jeroagullo_tabs.c   # UI tabs implementation
-        ├── jeroagullo_charts.c # Charting logic for sensor data
-        ├── jeroagullo_styles.c # Custom LVGL styles
-        └── ...
+    ├── jeroagullo_lvgl/    # LVGL UI source files
+    |   ├── jeroagullo_tabs.c   # UI tabs implementation
+    |   ├── jeroagullo_charts.c # Charting logic for sensor data
+    |   ├── jeroagullo_styles.c # Custom LVGL styles
+    |   └── ...
+    └── mqtt
+        ├── jeroagullo_mqtt.c
+        └── jeroagullo_mqtt.h
 ```
 
+Here's the README.md section for your MQTT configuration:
+
+# 🔧 MQTT Configuration
+
+The project uses Zephyr's Kconfig system for flexible MQTT configuration. All MQTT settings can be customized without modifying source code.
+
+## 📋 Configuration Options
+
+The following MQTT parameters are configurable via Kconfig:
+
+| Setting | Kconfig Variable | Default Value | Description |
+|---------|------------------|---------------|-------------|
+| **Client ID** | `CONFIG_MQTT_CLIENTID` | `"my-client"` | Unique identifier for this MQTT client |
+| **Broker Address** | `CONFIG_MQTT_SERVER_ADDR` | `"10.42.0.1"` | IP address or hostname of MQTT broker |
+| **Broker Port** | `CONFIG_MQTT_SERVER_PORT` | `1883` | MQTT broker port (typically 1883) |
+| **Topic** | `CONFIG_MQTT_TOPIC` | `"telemetry"` | Default topic for publishing data |
+| **Authentication** | `CONFIG_MQTT_USE_AUTH` | `y` | Enable/disable username/password auth |
+| **Username** | `CONFIG_MQTT_USER_NAME` | `"my-auth-id-1@my-tenant"` | MQTT authentication username |
+| **Password** | `CONFIG_MQTT_PASSWORD` | `"my-password"` | MQTT authentication password |
+
+### ⚙️ Configuration Methods
+
+#### Method 1: Edit `prj.conf` (Recommended for Development)
+```conf
+# MQTT Configuration
+CONFIG_MQTT_CLIENTID="stm32-sensor-01"
+CONFIG_MQTT_SERVER_ADDR="10.42.0.1"
+CONFIG_MQTT_SERVER_PORT=1883
+CONFIG_MQTT_TOPIC="sensor-data"
+CONFIG_MQTT_USE_AUTH=y
+CONFIG_MQTT_USER_NAME="device-user"
+CONFIG_MQTT_PASSWORD="secure-password"
+```
+
+#### Method 2: Interactive Menuconfig
+```bash
+west build -t menuconfig
+```
+Navigate to: **MQTT Configuration** → Modify settings → Save
+
+#### Method 3: Command Line Override
+```bash
+west build -- -DCONFIG_MQTT_SERVER_ADDR=\"192.168.1.100\" -DCONFIG_MQTT_CLIENTID=\"custom-client\"
+```
+
+### 🔐 Authentication Handling
+
+- When `CONFIG_MQTT_USE_AUTH=n`: No credentials sent to broker
+- When `CONFIG_MQTT_USE_AUTH=y`: Username/password sent if provided
+- Empty username/password strings are treated as no authentication
+
+## 🧪 Testing with Mosquitto
+
+For local testing and development, we provide a complete Mosquitto MQTT broker setup. 
+
+**📖 See detailed Mosquitto setup instructions here:** [mosquitto/README.md](mosquitto/README.md)
+
+
+## 🚨 Troubleshooting
+
+- **Connection refused**: Verify Mosquitto is running and firewall allows port 1883
+- **Authentication failed**: Check username/password in Mosquitto configuration
+- **Network unreachable**: Ensure STM32 and PC are on same network subnet
+
+For advanced Mosquitto configuration, security settings, and Docker deployment options, refer to the complete [mosquitto/README.md](mosquitto/README.md).
 # 📅 TODO list
 - [x] Add basic interface in LVGL with styles
 - [x] disable/enable the threads when a tab is pressed
 - [x] Add mutex to all lvgl functions to synchronize with lv_task_handler() call
 - [x] Add Network connection (tested with ethernet)
 - [x] Add sliders to corresponding windows
-- [ ] Add mqtt to send the sliders values
+- [x] Add mqtt to send the sliders values
 - [ ] Add IMU sensor
 - [ ] Add TensorFlow Lite model
 
