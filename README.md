@@ -135,6 +135,53 @@ For local testing and development, we provide a complete Mosquitto MQTT broker s
 - **Authentication failed**: Check username/password in Mosquitto configuration
 - **Network unreachable**: Ensure STM32 and PC are on same network subnet
 
+
+Here's a concise README section about the MPU6050 accelerometer integration:
+
+# 📊 MPU6050 Accelerometer Integration
+
+The project includes an MPU6050 IMU sensor for real-time motion data acquisition and visualization.
+
+## 🔌 Hardware Connection
+
+The MPU6050 connects to the STM32F746G-DISCO via I2C1:
+
+```
+STM32F746G-DISCO   ↔   MPU6050
+─────────────────────────────────
+  I2C1_SCL (PB8)   ↔     SCL
+  I2C1_SDA (PB9)   ↔     SDA
+      3.3V         ↔     VCC
+      GND          ↔     GND
+```
+
+**Address Configuration:**
+- **0x68** (default): AD0 pin connected to GND
+- **0x69**: AD0 pin connected to VCC
+
+## ⚙️ Software Configuration
+
+The sensor is defined in the device tree overlay:
+```dts
+&i2c1 {
+    imuSensor: mpu6050@68 {
+        compatible = "invensense,mpu6050";
+        reg = <0x68>;
+        status = "okay";
+    };
+};
+```
+
+### 🔧 Required Configuration
+
+Add to `prj.conf` or board config file (like in this project):
+```conf
+CONFIG_I2C=y
+CONFIG_SENSOR=y
+```
+
+The accelerometer data is automatically sampled and displayed in the sensor tab of the application, providing real-time motion visualization.
+
 For advanced Mosquitto configuration, security settings, and Docker deployment options, refer to the complete [mosquitto/README.md](mosquitto/README.md).
 # 📅 TODO list
 - [x] Add basic interface in LVGL with styles
@@ -143,8 +190,9 @@ For advanced Mosquitto configuration, security settings, and Docker deployment o
 - [x] Add Network connection (tested with ethernet)
 - [x] Add sliders to corresponding windows
 - [x] Add mqtt to send the sliders values
-- [ ] Add IMU sensor
+- [x] Add IMU sensor
 - [ ] Add TensorFlow Lite model
+- [ ] Add Config tab for configuration
 
 
 # 🌟 How to Contribute

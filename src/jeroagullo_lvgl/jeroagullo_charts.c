@@ -1,6 +1,7 @@
 #include <zephyr/kernel.h>
 #include <lvgl.h>
 #include "jeroagullo_lvgl.h"
+#include "sensors/accelerometer_handler.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(jeroagullo_charts);
@@ -17,12 +18,14 @@ void lv_update_imu_chart(void *chart_ptr, void *unused2, void *unused3)
 {        
         lv_obj_t *chart = (lv_obj_t *)chart_ptr;
 
+        int setup_status = SetupAccelerometer();
+
         uint8_t i = 0;
         while(1) {
                 lv_chart_series_t * ser = lv_chart_get_series_next(chart, NULL);
                 while(ser) {
                         k_mutex_lock(&lvgl_mutex, K_FOREVER);
-                        //lv_chart_set_next_value(chart, ser, accel_last_value[i]);
+                        lv_chart_set_next_value(chart, ser, accel_last_value[i]);
                         k_mutex_unlock(&lvgl_mutex);
                         ser = lv_chart_get_series_next(chart, ser);
                         //LOG_INF("i->%d --> %d", i, accel_last_value[i]);

@@ -27,27 +27,27 @@ static void event_tabview_cb(lv_event_t *e){
         switch(tabIdx){
                 case TAB_WELCOME:
                         //k_thread_suspend(thread_inferenceTFLite_id);
-                        //k_thread_suspend(thread_chart_id);
+                        k_thread_suspend(thread_chart_id);
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
                 case TAB_SLIDERS:
                         //k_thread_suspend(thread_inferenceTFLite_id);
-                        //k_thread_suspend(thread_chart_id);
+                        k_thread_suspend(thread_chart_id);
                         k_thread_resume(thread_mqtt_publish_id);
                 break;
                 case TAB_GRAPH:
                         //k_thread_suspend(thread_inferenceTFLite_id);
-                        //k_thread_resume(thread_chart_id);
+                        k_thread_resume(thread_chart_id);
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
                 case TAB_TFLITE:
                         //k_thread_resume(thread_inferenceTFLite_id);
-                        //k_thread_suspend(thread_chart_id);
+                        k_thread_suspend(thread_chart_id);
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
                 case TAB_CONFIG:
                         //k_thread_resume(thread_inferenceTFLite_id);
-                        //k_thread_suspend(thread_chart_id);
+                        k_thread_suspend(thread_chart_id);
                         k_thread_suspend(thread_mqtt_publish_id);
                 break;
         }

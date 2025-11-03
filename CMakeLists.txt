@@ -10,6 +10,6 @@ project(display_poc_1)
 
 #include(${jeroagullo_net}/CMakeLists.txt)
 
-FILE(GLOB app_sources src/* src/tensorFlow/* src/jeroagullo_lvgl/* src/mqtt/*)
+FILE(GLOB app_sources src/* src/tensorFlow/* src/jeroagullo_lvgl/* src/mqtt/* src/sensors/*)
 target_sources(app PRIVATE ${app_sources})
 zephyr_include_directories(src)

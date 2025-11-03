@@ -2,10 +2,10 @@
 	status = "okay";
 
 	// addresses: low -> 0x68, high -> 0x69
-	/*imuSensor: mpu6050@68 {
+	imuSensor: mpu6050@68 {
 		compatible = "invensense,mpu6050";
 		reg = <0x68>;
 		status = "okay";
-	};*/
+	};
 
 };
